@@ -11,6 +11,11 @@ app.use(bodyParser.json());
 // create an array to store the tasks (for demonstration purposes)
 let tasks = [];
 
+// route handler for the root URL ("/")
+app.get("/", (req, res) => {
+  res.send("Welcome to the Task Manager");
+});
+
 // define a route to handle the POST request for adding tasks
 app.post("/tasks", (req, res) => {
   // get the task details from the request body
