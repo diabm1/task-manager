@@ -11,8 +11,8 @@ taskForm.addEventListener("submit", function (e) {
   const taskDueDateInput = document.getElementById("taskDueDate");
 
   const taskTitle = taskTitleInput.value;
-  const taskDescription = taskTitleInput.value;
-  const taskDueDate = taskTitleInput.value;
+  const taskDescription = taskDescriptionInput.value;
+  const taskDueDate = taskDueDateInput.value;
 
   // create a task object with the captured details
   const task = {
@@ -27,3 +27,37 @@ taskForm.addEventListener("submit", function (e) {
   //reset form fields
   taskForm.reset();
 });
+
+// assuming tasks is an array containing all the tasks
+const tasks = [];
+
+// function to render a task item
+function renderTask(task) {
+  const taskList = document.getElementById("taskList");
+
+  // create a new list item element
+  const taskItem = document.createElement("li");
+
+  // set the innerHTML of the list item with the task details
+  taskItem.innerHTML = `
+    <h3>${task.title}</h3>
+    <p>${task.description}</p>
+    <p>Due Date: ${task.dueDate}</p>
+    `;
+
+  // append the list item to the task list
+  taskList.appendChild(taskItem);
+}
+
+// example code for adding a new task
+const newTask = {
+  title: "New Task",
+  description: "This is a new task",
+  dueDate: "2022-12-31",
+};
+
+// add the new task to the tasks array
+tasks.push(newTask);
+
+// render the new task on the page
+renderTask(newTask);

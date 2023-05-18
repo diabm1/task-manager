@@ -9,11 +9,21 @@ const app = express();
 app.use(bodyParser.json());
 
 // create an array to store the tasks (for demonstration purposes)
-let tasks = [];
+const tasks = [
+  { id: 1, title: "Task 1", description: "Task 1 description" },
+  { id: 2, title: "Task 2", description: "Task 2 description" },
+  { id: 3, title: "Task 3", description: "Task 3 description" },
+];
 
 // route handler for the root URL ("/")
 app.get("/", (req, res) => {
   res.send("Welcome to the Task Manager");
+});
+
+// endpoint for retreiving tasks
+app.get("/tasks", (req, res) => {
+  // retreive the tasks from the server or database
+  res.send(tasks);
 });
 
 // define a route to handle the POST request for adding tasks
@@ -33,7 +43,7 @@ app.post("/tasks", (req, res) => {
   tasks.push(newTask);
 
   // send a response indicating successful task creation
-  res.status(201).json(newTask);
+  res.status(201).send(newTask);
 });
 
 // start the server
