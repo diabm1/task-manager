@@ -1,4 +1,4 @@
-// import necassary dependencies
+// import necessary dependencies
 const express = require("express");
 const bodyParser = require("body-parser");
 
@@ -20,30 +20,40 @@ app.get("/", (req, res) => {
   res.send("Welcome to the Task Manager");
 });
 
-// endpoint for retreiving tasks
+// endpoint for retrieving tasks
 app.get("/tasks", (req, res) => {
-  // retreive the tasks from the server or database
-  res.send(tasks);
+  try {
+    // retrieve the tasks from the server or database
+    res.send(tasks);
+  } catch (error) {
+    // handle any errors that occurred during task retrieval
+    res.status(500).send("Error retrieving tasks");
+  }
 });
 
 // define a route to handle the POST request for adding tasks
 app.post("/tasks", (req, res) => {
-  // get the task details from the request body
-  const { title, description, dueDate } = req.body;
+  try {
+    // get the task details from the request body
+    const { title, description, dueDate } = req.body;
 
-  // create a new task object
-  const newTask = {
-    id: tasks.length + 1, // generates a unique ID (need to use a database later on)
-    title,
-    description,
-    dueDate,
-  };
+    // create a new task object
+    const newTask = {
+      id: tasks.length + 1, // generates a unique ID (need to use a database later on)
+      title,
+      description,
+      dueDate,
+    };
 
-  // store the new task in the tasks array
-  tasks.push(newTask);
+    // store the new task in the tasks array
+    tasks.push(newTask);
 
-  // send a response indicating successful task creation
-  res.status(201).send(newTask);
+    // send a response indicating successful task creation
+    res.status(201).send(newTask);
+  } catch (error) {
+    // handle any errors that occurred during task creation
+    res.status(500).send("Error creating task");
+  }
 });
 
 // start the server
