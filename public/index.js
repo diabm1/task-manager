@@ -1,5 +1,6 @@
 // get reference to the task form
 const taskForm = document.getElementById("taskForm");
+const taskList = document.getElementById("task-list");
 
 // add event listener for form submission
 taskForm.addEventListener("submit", function (e) {
