@@ -42,6 +42,7 @@ taskForm.addEventListener("submit", function (e) {
 // Function to render a task item
 function renderTask(task) {
   const taskItem = document.createElement("li");
+  taskItem.setAttribute("data-task-id", task.id);
 
   const taskLink = document.createElement("a");
   taskLink.textContent = task.title;
@@ -83,17 +84,26 @@ renderTask(newTask);
 
 // Function to delete a task
 function deleteTask(taskId) {
-  // Find the index of the task with the given ID
-  const taskIndex = tasks.findIndex((task) => task.id === taskId);
-
-  if (taskIndex !== -1) {
-    // Remove the task from the tasks array
-    tasks.splice(taskIndex, 1);
-
-    // Remove the task item from the task list
-    const taskItem = document.querySelector(`li[data-task-id="${taskId}"]`);
-    if (taskItem) {
-      taskItem.remove();
-    }
-  }
+  // Send a DELETE request to the server
+  fetch(`http://localhost:3000/tasks/${taskId}`, {
+    method: "DELETE",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error deleting task");
+      }
+      // Remove the task from the tasks array
+      const taskIndex = tasks.findIndex((task) => task.id === taskId);
+      if (taskIndex !== -1) {
+        tasks.splice(taskIndex, 1);
+      }
+      // Remove the task item from the task list
+      const taskItem = document.querySelector(`li[data-task-id="${taskId}"]`);
+      if (taskItem) {
+        taskItem.remove();
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+    });
 }

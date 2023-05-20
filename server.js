@@ -6,7 +6,7 @@ const {
   createTask,
   getTaskById,
   deleteTask,
-  updateTask
+  updateTask,
 } = require("./controllers/taskController");
 
 const app = express();

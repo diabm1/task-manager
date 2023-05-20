@@ -46,6 +46,7 @@ module.exports = {
       res.status(500).send("Error retrieving task");
     }
   },
+
   updateTask: (req, res) => {
     try {
       const taskId = parseInt(req.params.id);
