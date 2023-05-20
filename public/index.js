@@ -1,5 +1,8 @@
 // Assuming tasks is an array containing all the tasks
-const tasks = [];
+let tasks = [];
+
+// Define the base URL for API requests
+const baseUrl = "http://localhost:3000";
 
 // Get reference to the task form
 const taskForm = document.getElementById("taskForm");
@@ -7,7 +10,7 @@ const taskList = document.getElementById("taskList");
 
 // Add event listener for form submission
 taskForm.addEventListener("submit", function (e) {
-  e.preventDefault(); // Prevents default form submission
+  e.preventDefault(); // Prevent default form submission
 
   // Get the task details from the form fields
   const taskTitleInput = document.getElementById("taskTitle");
@@ -20,23 +23,23 @@ taskForm.addEventListener("submit", function (e) {
 
   // Create a task object with the captured details
   const task = {
-    id: tasks.length + 1, // Generate unique ID
     title: taskTitle,
     description: taskDescription,
     dueDate: taskDueDate,
   };
 
-  // Use the task obj as needed (e.g., send it to the server, update UI, etc.)
-  console.log(task);
-
-  // Add the new task to the tasks array
-  tasks.push(task);
-
-  // Render the new task on the page
-  renderTask(task);
-
-  // Reset form fields
-  taskForm.reset();
+  // Send a POST request to create a new task
+  axios
+    .post(`${baseUrl}/tasks`, task)
+    .then((response) => {
+      const newTask = response.data;
+      tasks.push(newTask); // Add the new task to the tasks array
+      renderTask(newTask); // Render the new task on the page
+      taskForm.reset(); // Reset form fields
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+    });
 });
 
 // Function to render a task item
@@ -68,42 +71,28 @@ function renderTask(task) {
   taskList.appendChild(taskItem);
 }
 
-// Example code for adding a new task
-const newTask = {
-  id: tasks.length + 1, // Generate unique ID
-  title: "New Task",
-  description: "This is a new task",
-  dueDate: "2022-12-31",
-};
-
-// Add the new task to the tasks array
-tasks.push(newTask);
-
-// Render the new task on the page
-renderTask(newTask);
-
 // Function to delete a task
 function deleteTask(taskId) {
   // Send a DELETE request to the server
-  fetch(`http://localhost:3000/tasks/${taskId}`, {
-    method: "DELETE",
-  })
+  axios
+    .delete(`${baseUrl}/tasks/${taskId}`)
     .then((response) => {
-      if (!response.ok) {
+      if (response.status === 204) {
+        // Remove the task from the tasks array
+        tasks = tasks.filter((task) => task.id !== taskId);
+
+        // Remove the task item from the task list
+        const taskItem = document.querySelector(`li[data-task-id="${taskId}"]`);
+        if (taskItem) {
+          taskItem.remove();
+        }
+      } else {
         throw new Error("Error deleting task");
-      }
-      // Remove the task from the tasks array
-      const taskIndex = tasks.findIndex((task) => task.id === taskId);
-      if (taskIndex !== -1) {
-        tasks.splice(taskIndex, 1);
-      }
-      // Remove the task item from the task list
-      const taskItem = document.querySelector(`li[data-task-id="${taskId}"]`);
-      if (taskItem) {
-        taskItem.remove();
       }
     })
     .catch((error) => {
       console.error("Error:", error.message);
+      // Display an error message on the page or perform any other error handling
     });
 }
+

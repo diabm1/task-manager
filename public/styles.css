@@ -1,4 +1,35 @@
-ul {
+/* Reset default styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Task list styles */
+.task-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -9,6 +40,7 @@ ul {
     padding: 10px;
     border: 1px solid #ccc;
     background-color: #f9f9f9;
+    border-radius: 4px;
 }
 
 .task-item h3 {
@@ -26,7 +58,27 @@ ul {
     color: #999;
 }
 
-/* Style the form */
+/* Task details styles */
+.task-details-container {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-details-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.task-details-container p {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+/* Form styles */
 #taskForm {
     margin-bottom: 20px;
 }
@@ -34,22 +86,27 @@ ul {
 #taskForm label {
     display: block;
     margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 16px;
 }
 
 #taskForm input[type="text"],
 #taskForm textarea,
 #taskForm input[type="date"] {
     width: 100%;
-    padding: 5px;
+    padding: 10px;
     font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }
 
 #taskForm button {
-    padding: 5px 10px;
-    font-size: 14px;
+    padding: 10px 20px;
+    font-size: 16px;
     background-color: #4caf50;
     color: #fff;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
 }
 
@@ -57,49 +114,29 @@ ul {
     background-color: #45a049;
 }
 
-/* style the overall layout */
-body {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.task-details-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f2f2f2;
-    border-radius: 8px;
-}
-
-.task-title {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.task-description,
-.task-due-date {
-    margin-bottom: 10px;
-}
-
-.edit-button,
-.delete-button {
-    margin-top: 20px;
+/* Button styles */
+.button {
     padding: 10px 20px;
+    font-size: 16px;
     background-color: #4caf50;
-    color: white;
+    color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
+.button:hover {
+    background-color: #45a049;
+}
+
 .back-link {
     display: block;
     margin-top: 20px;
+    font-size: 14px;
+    color: #999;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
 }
