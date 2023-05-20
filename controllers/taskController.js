@@ -1,69 +1,92 @@
-// create an array to store the tasks (for demonstration purposes)
 const tasks = [
   { id: 1, title: "Task 1", description: "Task 1 description" },
   { id: 2, title: "Task 2", description: "Task 2 description" },
   { id: 3, title: "Task 3", description: "Task 3 description" },
 ];
+
 module.exports = {
-  // function to retrieve tasks
   getTasks: (req, res) => {
     try {
-      // retrieve the tasks from the server or database
       res.send(tasks);
     } catch (error) {
-      // handle any errors that occurred during task retrieval
       res.status(500).send("Error retrieving tasks");
     }
   },
 
-  // function to create a new task
   createTask: (req, res) => {
     try {
-      // get the task details from the request body
       const { title, description, dueDate } = req.body;
 
-      // create a new task object
       const newTask = {
-        id: tasks.length + 1, // generates a unique ID (need to use a database later on)
+        id: tasks.length + 1,
         title,
         description,
         dueDate,
       };
 
-      // store the new task in the tasks array
       tasks.push(newTask);
-
-      // send a response indicating successful task creation
       res.status(201).send(newTask);
     } catch (error) {
-      // handle any errors that occurred during task creation
       res.status(500).send("Error creating task");
     }
   },
 
-  // function to fetch tasks from the server
-  fetchTasks: async (req, res) => {
+  getTaskById: (req, res) => {
     try {
-      // the logic to fetch tasks from the server
-      const response = await fetch("http://localhost:3000/tasks");
-      if (!response.ok) {
-        throw new Error("Failed to fetch tasks");
+      const taskId = parseInt(req.params.id);
+      const task = tasks.find((task) => task.id === taskId);
+
+      if (!task) {
+        res.status(404).send("Task not found");
+      } else {
+        res.send(task);
+      }
+    } catch (error) {
+      console.error("Error retrieving task:", error.message);
+      res.status(500).send("Error retrieving task");
+    }
+  },
+  updateTask: (req, res) => {
+    try {
+      const taskId = parseInt(req.params.id);
+      const taskIndex = tasks.findIndex((task) => task.id === taskId);
+
+      if (taskIndex === -1) {
+        res.status(404).send("Task not found");
+        return;
       }
 
-      // parse the response data as JSON
-      const tasks = await response.json();
+      const { title, description, dueDate } = req.body;
 
-      // process the tasks and generate the task list HTML
-      const taskListHTML = tasks
-        .map((task) => {
-          return `<li>${task.title}</li>`;
-        })
-        .join("");
+      tasks[taskIndex] = {
+        ...tasks[taskIndex],
+        title: title || tasks[taskIndex].title,
+        description: description || tasks[taskIndex].description,
+        dueDate: dueDate || tasks[taskIndex].dueDate,
+      };
 
-      // send the task list HTML as the response
-      return taskListHTML;
+      res.send(tasks[taskIndex]);
     } catch (error) {
-      throw new Error("Error fetching tasks: " + error.message);
+      console.error("Error updating task:", error.message);
+      res.status(500).send("Error updating task");
+    }
+  },
+
+  deleteTask: (req, res) => {
+    try {
+      const taskId = parseInt(req.params.id);
+      const taskIndex = tasks.findIndex((task) => task.id === taskId);
+
+      if (taskIndex === -1) {
+        res.status(404).send("Task not found");
+        return;
+      }
+
+      const deletedTask = tasks.splice(taskIndex, 1);
+      res.send(deletedTask[0]);
+    } catch (error) {
+      console.error("Error deleting task:", error.message);
+      res.status(500).send("Error deleting task");
     }
   },
 };

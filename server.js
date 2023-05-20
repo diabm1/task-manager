@@ -1,41 +1,35 @@
-// import necessary dependencies
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const {
   getTasks,
   createTask,
-  fetchTasks,
+  getTaskById,
+  deleteTask,
+  updateTask
 } = require("./controllers/taskController");
 
-// create an instance of express
 const app = express();
 
-// use body-parser middleware to parse JSON data
 app.use(bodyParser.json());
+app.use(cors());
 
-// route handler for the root URL ("/")
 app.get("/", async (req, res) => {
   try {
-    // call the fetchTasks function to generate the task list HTML
-    const taskListHTML = await fetchTasks();
-    // render the task list HTML as the response
-    res.send(taskListHTML);
+    res.send("<h1>Welcome to Task Manager API</h1>");
   } catch (error) {
-    console.error("Error fetching tasks:", error.message);
-    res.status(500).send("Error fetching tasks: " + error.message);
+    console.error("Error:", error.message);
+    res.status(500).send("Error: " + error.message);
   }
 });
 
-// endpoint for retrieving tasks
+// endpoints for tasks
 app.get("/tasks", getTasks);
-
-// route to handle the POST request for adding tasks
 app.post("/tasks", createTask);
+app.get("/tasks/:id", getTaskById);
+app.put("/tasks/:id", updateTask);
+app.delete("/tasks/:id", deleteTask);
 
-// route to handle GET request for tasks
-app.get("/api/tasks", fetchTasks);
-
-// start the server
 app.listen(3000, () => {
   console.log("Server started on port 3000");
 });

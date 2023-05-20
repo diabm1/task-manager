@@ -1,12 +1,16 @@
-// get reference to the task form
+//  an array containing all the tasks
+const tasks = [];
+
+// Get reference to the task form
 const taskForm = document.getElementById("taskForm");
-const taskList = document.getElementById("task-list");
+const taskList = document.getElementById("taskList");
+const taskDetailsContainer = document.getElementById("taskDetailsContainer");
 
-// add event listener for form submission
+// Add event listener for form submission
 taskForm.addEventListener("submit", function (e) {
-  e.preventDefault(); // prevents default form submission
+  e.preventDefault(); // Prevents default form submission
 
-  // get the task details from the form fields
+  // Get the task details from the form fields
   const taskTitleInput = document.getElementById("taskTitle");
   const taskDescriptionInput = document.getElementById("taskDescription");
   const taskDueDateInput = document.getElementById("taskDueDate");
@@ -15,50 +19,48 @@ taskForm.addEventListener("submit", function (e) {
   const taskDescription = taskDescriptionInput.value;
   const taskDueDate = taskDueDateInput.value;
 
-  // create a task object with the captured details
+  // Create a task object with the captured details
   const task = {
+    id: tasks.length + 1, // Generate unique ID
     title: taskTitle,
     description: taskDescription,
     dueDate: taskDueDate,
   };
 
-  // use the task obj as needed (e.g., send it to the server, Update UI, etc.)
+  // Use the task object as needed (e.g., send it to the server, update UI, etc.)
   console.log(task);
 
-  //reset form fields
+  // Add the new task to the tasks array
+  tasks.push(task);
+
+  // Render the new task on the page
+  renderTask(task);
+
+  // Reset form fields
   taskForm.reset();
 });
 
-// assuming tasks is an array containing all the tasks
-const tasks = [];
-
-// function to render a task item
+// Function to render a task item
 function renderTask(task) {
-  const taskList = document.getElementById("taskList");
-
-  // create a new list item element
   const taskItem = document.createElement("li");
+  const taskLink = document.createElement("a");
+  taskLink.textContent = task.title;
+  taskLink.href = `task-details.html?id=${task.id}`;
 
-  // set the innerHTML of the list item with the task details
-  taskItem.innerHTML = `
-    <h3>${task.title}</h3>
-    <p>${task.description}</p>
-    <p>Due Date: ${task.dueDate}</p>
-    `;
-
-  // append the list item to the task list
+  taskItem.appendChild(taskLink);
   taskList.appendChild(taskItem);
 }
 
-// example code for adding a new task
+// Example code for adding a new task
 const newTask = {
+  id: tasks.length + 1, // Generate unique ID
   title: "New Task",
   description: "This is a new task",
   dueDate: "2022-12-31",
 };
 
-// add the new task to the tasks array
+// Add the new task to the tasks array
 tasks.push(newTask);
 
-// render the new task on the page
+// Render the new task on the page
 renderTask(newTask);
