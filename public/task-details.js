@@ -11,7 +11,9 @@ const deleteButton = document.getElementById("delete-button");
 const editForm = document.getElementById("edit-form");
 const editTaskForm = document.getElementById("edit-task-form");
 const editTaskTitleInput = document.getElementById("edit-task-title");
-const editTaskDescriptionInput = document.getElementById("edit-task-description");
+const editTaskDescriptionInput = document.getElementById(
+  "edit-task-description"
+);
 const editTaskDueDateInput = document.getElementById("edit-task-due-date");
 const cancelButton = document.getElementById("cancel-button");
 
@@ -126,7 +128,8 @@ function renderTaskDetails(task) {
         .catch((error) => {
           console.error("Error:", error.message);
           // handle error and display appropriate message on the page
-          const taskDetailsContainer = document.getElementById("task-container");
+          const taskDetailsContainer =
+            document.getElementById("task-container");
           if (taskDetailsContainer) {
             taskDetailsContainer.innerHTML =
               "<p>Error updating task details. Please try again.</p>";

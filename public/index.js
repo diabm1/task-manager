@@ -1,10 +1,9 @@
-//  an array containing all the tasks
+// Assuming tasks is an array containing all the tasks
 const tasks = [];
 
 // Get reference to the task form
 const taskForm = document.getElementById("taskForm");
 const taskList = document.getElementById("taskList");
-const taskDetailsContainer = document.getElementById("taskDetailsContainer");
 
 // Add event listener for form submission
 taskForm.addEventListener("submit", function (e) {
@@ -27,7 +26,7 @@ taskForm.addEventListener("submit", function (e) {
     dueDate: taskDueDate,
   };
 
-  // Use the task object as needed (e.g., send it to the server, update UI, etc.)
+  // Use the task obj as needed (e.g., send it to the server, update UI, etc.)
   console.log(task);
 
   // Add the new task to the tasks array
@@ -43,11 +42,28 @@ taskForm.addEventListener("submit", function (e) {
 // Function to render a task item
 function renderTask(task) {
   const taskItem = document.createElement("li");
+
   const taskLink = document.createElement("a");
   taskLink.textContent = task.title;
   taskLink.href = `task-details.html?id=${task.id}`;
 
+  const deleteButton = document.createElement("button");
+  deleteButton.textContent = "Delete";
+  deleteButton.addEventListener("click", () => {
+    deleteTask(task.id);
+  });
+
+  const descriptionParagraph = document.createElement("p");
+  descriptionParagraph.textContent = task.description;
+
+  const dueDateParagraph = document.createElement("p");
+  dueDateParagraph.textContent = `Due Date: ${task.dueDate}`;
+
   taskItem.appendChild(taskLink);
+  taskItem.appendChild(deleteButton);
+  taskItem.appendChild(descriptionParagraph);
+  taskItem.appendChild(dueDateParagraph);
+
   taskList.appendChild(taskItem);
 }
 
@@ -64,3 +80,20 @@ tasks.push(newTask);
 
 // Render the new task on the page
 renderTask(newTask);
+
+// Function to delete a task
+function deleteTask(taskId) {
+  // Find the index of the task with the given ID
+  const taskIndex = tasks.findIndex((task) => task.id === taskId);
+
+  if (taskIndex !== -1) {
+    // Remove the task from the tasks array
+    tasks.splice(taskIndex, 1);
+
+    // Remove the task item from the task list
+    const taskItem = document.querySelector(`li[data-task-id="${taskId}"]`);
+    if (taskItem) {
+      taskItem.remove();
+    }
+  }
+}
