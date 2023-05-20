@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const {
   getTasks,
   createTask,
-  fetchTasks
+  fetchTasks,
 } = require("./controllers/taskController");
 
 // create an instance of express
@@ -14,8 +14,16 @@ const app = express();
 app.use(bodyParser.json());
 
 // route handler for the root URL ("/")
-app.get("/", (req, res) => {
-  res.send("Welcome to the Task Manager");
+app.get("/", async (req, res) => {
+  try {
+    // call the fetchTasks function to generate the task list HTML
+    const taskListHTML = await fetchTasks();
+    // render the task list HTML as the response
+    res.send(taskListHTML);
+  } catch (error) {
+    console.error("Error fetching tasks:", error.message);
+    res.status(500).send("Error fetching tasks: " + error.message);
+  }
 });
 
 // endpoint for retrieving tasks

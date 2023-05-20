@@ -1,13 +1,71 @@
-/* * {
+ul {
+    list-style: none;
+    padding: 0;
     margin: 0;
-    padding: 0;
-} */
-
-#task-list {
-    list-style-type: none;
-    padding: 0;
 }
 
-#task-list li {
-    margin-bottom: 10px;
+.task-item {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+.task-item h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+}
+
+.task-item p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.task-item .due-date {
+    font-size: 12px;
+    color: #999;
+}
+
+/* Style the form */
+#taskForm {
+    margin-bottom: 20px;
+}
+
+#taskForm label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#taskForm input[type="text"],
+#taskForm textarea,
+#taskForm input[type="date"] {
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+}
+
+#taskForm button {
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+#taskForm button:hover {
+    background-color: #45a049;
+}
+
+/* style the overall layout */
+body {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
 }

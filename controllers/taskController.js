@@ -42,9 +42,16 @@ module.exports = {
   },
 
   // function to fetch tasks from the server
-  fetchTasks: (req, res) => {
+  fetchTasks: async (req, res) => {
     try {
-      // perform the logic to fetch tasks from the server
+      // the logic to fetch tasks from the server
+      const response = await fetch("http://localhost:3000/tasks");
+      if (!response.ok) {
+        throw new Error("Failed to fetch tasks");
+      }
+
+      // parse the response data as JSON
+      const tasks = await response.json();
 
       // process the tasks and generate the task list HTML
       const taskListHTML = tasks
@@ -54,11 +61,9 @@ module.exports = {
         .join("");
 
       // send the task list HTML as the response
-      res.send(taskListHTML);
+      return taskListHTML;
     } catch (error) {
-      // handle any error that occurred during the fetch request
-      console.error("Error fetching tasks:", error);
-      res.status(500).send("Error fetching tasks");
+      throw new Error("Error fetching tasks: " + error.message);
     }
   },
 };
