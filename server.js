@@ -1,7 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const { seed } = require("./seed.js");
 const {
   getTasks,
   createTask,
@@ -14,8 +13,6 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
-
-app.post("/seed", seed);
 
 app.get("/", async (req, res) => {
   try {
