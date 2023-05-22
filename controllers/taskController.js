@@ -12,18 +12,10 @@ const sequelize = new Sequelize(CONNECTION_STRING, {
   },
 });
 
-// const tasks = [
-//   { id: 1, title: "Task 1", description: "Task 1 description" },
-//   { id: 2, title: "Task 2", description: "Task 2 description" },
-//   { id: 3, title: "Task 3", description: "Task 3 description" },
-// ];
-
 module.exports = {
   getTasks: async (req, res) => {
     try {
-      const tasks = await sequelize.query("SELECT * FROM tasks", {
-        type: QueryTypes.SELECT,
-      });
+      const [tasks] = await sequelize.query("SELECT * FROM tasks");
       res.send(tasks);
     } catch (error) {
       console.error("Error retrieving tasks:", error.message);
@@ -35,12 +27,10 @@ module.exports = {
     try {
       const { title, description, dueDate } = req.body;
 
-      const newTask = await sequelize.query(
-        "INSERT INTO tasks (title, description, due_date) VALUES (:title, :description, :dueDate) RETURNING *",
+      const [newTask] = await sequelize.query(
+        "INSERT INTO tasks (title, description, due_date) VALUES (?, ?, ?) RETURNING *",
         {
-          type: QueryTypes.INSERT,
-          replacements: { title, description, dueDate },
-          model: Task,
+          replacements: [title, description, dueDate],
         }
       );
 
@@ -54,14 +44,9 @@ module.exports = {
   getTaskById: async (req, res) => {
     try {
       const taskId = parseInt(req.params.id);
-      const task = await sequelize.query(
-        "SELECT * FROM tasks WHERE id = :taskId",
-        {
-          type: QueryTypes.SELECT,
-          replacements: { taskId },
-          model: Task,
-        }
-      );
+      const [task] = await sequelize.query("SELECT * FROM tasks WHERE id = ?", {
+        replacements: [taskId],
+      });
 
       if (!task || task.length === 0) {
         res.status(404).send("Task not found");
@@ -79,12 +64,10 @@ module.exports = {
       const taskId = parseInt(req.params.id);
       const { title, description, dueDate } = req.body;
 
-      const updatedTask = await sequelize.query(
-        "UPDATE tasks SET title = :title, description = :description, due_date = :dueDate WHERE id = :taskId RETURNING *",
+      const [updatedTask] = await sequelize.query(
+        "UPDATE tasks SET title = ?, description = ?, due_date = ? WHERE id = ? RETURNING *",
         {
-          type: QueryTypes.UPDATE,
-          replacements: { title, description, dueDate, taskId },
-          model: Task,
+          replacements: [title, description, dueDate, taskId],
         }
       );
 
@@ -103,19 +86,17 @@ module.exports = {
     try {
       const taskId = parseInt(req.params.id);
 
-      const deletedTask = await sequelize.query(
-        "DELETE FROM tasks WHERE id = :taskId RETURNING *",
+      const [deletedTask] = await sequelize.query(
+        "DELETE FROM tasks WHERE id = ? RETURNING *",
         {
-          type: QueryTypes.DELETE,
-          replacements: { taskId },
-          model: Task,
+          replacements: [taskId],
         }
       );
 
       if (!deletedTask || deletedTask.length === 0) {
         res.status(404).send("Task not found");
       } else {
-        res.send(deletedTask[0]);
+        res.status(204).send();
       }
     } catch (error) {
       console.error("Error deleting task:", error.message);

@@ -11,10 +11,11 @@ const sequelize = new Sequelize(CONNECTION_STRING, {
 });
 
 const seedData = [
-  { title: 'Task 1', description: 'Task 1 description', dueDate: new Date() },
-  { title: 'Task 2', description: 'Task 2 description', dueDate: new Date() },
-  { title: 'Task 3', description: 'Task 3 description', dueDate: new Date() },
-];
+    { title: 'Task 1', description: 'Task 1 description', dueDate: new Date().toISOString().slice(0, 10) },
+    { title: 'Task 2', description: 'Task 2 description', dueDate: new Date().toISOString().slice(0, 10) },
+    { title: 'Task 3', description: 'Task 3 description', dueDate: new Date().toISOString().slice(0, 10) },
+  ];
+  
 
 const seedDatabase = async () => {
   try {
@@ -49,6 +50,7 @@ const seedDatabase = async () => {
     console.log("Database seeded successfully");
   } catch (error) {
     console.error("Error seeding database:", error);
+    throw error;
   } finally {
     // Close the database connection
     await sequelize.close();

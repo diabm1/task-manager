@@ -38,6 +38,21 @@ if (taskId) {
           "<p>Error fetching task details. Please try again.</p>";
       }
     });
+  // Add event listener to the delete button
+  deleteButton.addEventListener("click", () => {
+    axios
+      .delete(`${baseUrl}/tasks/${taskId}`)
+      .then(() => {
+        // If successful, redirect to the main page
+        window.location.href = "index.html";
+      })
+      .catch((error) => {
+        console.error("Error:", error.message);
+        // Handle error and display appropriate message on the page
+        taskContainer.innerHTML =
+          "<p>Error deleting task. Please try again.</p>";
+      });
+  });
 }
 
 function renderTaskDetails(task) {
@@ -55,7 +70,17 @@ function renderTaskDetails(task) {
     descriptionElement.textContent = task.description;
 
     const dueDateElement = document.createElement("p");
-    dueDateElement.textContent = `Due Date: ${task.dueDate}`;
+    // Create a new Date object using the string date
+    const dueDate = new Date(task.dueDate);
+
+    // Format the date and set the text content
+    if (!isNaN(dueDate)) {
+      // Check if the date is valid
+      dueDateElement.textContent = `Due Date: ${new Date(task.dueDate).toLocaleDateString()}`;
+
+    } else {
+      dueDateElement.textContent = "Due Date: Invalid Date";
+    }
 
     // Append elements to the task details container
     taskContainer.appendChild(titleElement);
@@ -88,7 +113,7 @@ function renderTaskDetails(task) {
       const updatedTask = {
         title: editTaskTitleInput.value,
         description: editTaskDescriptionInput.value,
-        dueDate: editTaskDueDateInput.value,
+        dueDate: new Date(editTaskDueDateInput.value).toISOString(), // Convert the date string to an ISO string
       };
 
       // Send the PUT request to update the task details

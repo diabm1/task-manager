@@ -25,8 +25,8 @@ taskForm.addEventListener("submit", function (e) {
   const task = {
     title: taskTitle,
     description: taskDescription,
-    dueDate: taskDueDate,
-  };
+    dueDate: new Date(taskDueDate).toISOString().slice(0, 10),
+};
 
   // Send a POST request to create a new task
   axios
@@ -61,7 +61,13 @@ function renderTask(task) {
   descriptionParagraph.textContent = task.description;
 
   const dueDateParagraph = document.createElement("p");
-  dueDateParagraph.textContent = `Due Date: ${task.dueDate}`;
+  const dueDate = new Date(task.dueDate);
+  if (!isNaN(dueDate)) {  // Check if the date is valid
+    dueDateParagraph.textContent = `Due Date: ${new Date(task.dueDate).toLocaleDateString()}`;
+
+  } else {
+    dueDateParagraph.textContent = "Due Date: Invalid Date";
+  }
 
   taskItem.appendChild(taskLink);
   taskItem.appendChild(deleteButton);
@@ -95,4 +101,3 @@ function deleteTask(taskId) {
       // Display an error message on the page or perform any other error handling
     });
 }
-

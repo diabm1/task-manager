@@ -22,8 +22,8 @@ app.post("/seed", async (req, res) => {
     res.send("Database seeded successfully");
   } catch (error) {
     console.error("Error seeding database:", error);
-    res.status(500).send("Error seeding database");
-  }
+    res.status(500).send(`Error seeding database: ${error.message}`);
+  }  
 });
 
 app.get("/", async (req, res) => {
