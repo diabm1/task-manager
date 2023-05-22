@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const { seed } = require("./seed.js");
+const seedDatabase = require("./seed.js");
 const {
   getTasks,
   createTask,
@@ -15,7 +15,16 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.post("/seed", seed);
+app.post("/seed", async (req, res) => {
+  try {
+    await seedDatabase();
+
+    res.send("Database seeded successfully");
+  } catch (error) {
+    console.error("Error seeding database:", error);
+    res.status(500).send("Error seeding database");
+  }
+});
 
 app.get("/", async (req, res) => {
   try {
