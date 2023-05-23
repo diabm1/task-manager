@@ -15,6 +15,13 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+// Enable caching for static assets
+app.use(express.static("public", { maxAge: 3600000 }));
+
+// Enable compression
+const compression = require("compression");
+app.use(compression());
+
 app.post("/seed", async (req, res) => {
   try {
     await seedDatabase();
@@ -23,7 +30,7 @@ app.post("/seed", async (req, res) => {
   } catch (error) {
     console.error("Error seeding database:", error);
     res.status(500).send(`Error seeding database: ${error.message}`);
-  }  
+  }
 });
 
 app.get("/", async (req, res) => {
