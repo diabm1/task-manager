@@ -1,18 +1,51 @@
-// Assuming tasks is an array containing all the tasks
-let tasks = [];
-
-// Define the base URL for API requests
 const baseUrl = "http://localhost:3000";
 
 // Get reference to the task form
 const taskForm = document.getElementById("taskForm");
 const taskList = document.getElementById("taskList");
 
+// Fetch tasks from the server and render them on the page
+function fetchTasks() {
+  axios
+    .get(`${baseUrl}/tasks`)
+    .then((response) => {
+      const tasks = response.data;
+      renderTasks(tasks);
+    })
+    .catch((error) => {
+      console.error("Error fetching tasks:", error.message);
+    });
+}
+
+// Render the tasks on the page
+function renderTasks(tasks) {
+  taskList.innerHTML = ""; // Clear the task list
+
+  tasks.forEach((task) => {
+    const taskItem = document.createElement("li");
+    taskItem.setAttribute("data-task-id", task.id);
+
+    const taskLink = document.createElement("a");
+    taskLink.textContent = task.title;
+    taskLink.href = `task-details.html?id=${task.id}`;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => {
+      deleteTask(task.id);
+    });
+
+    taskItem.appendChild(taskLink);
+    taskItem.appendChild(deleteButton);
+
+    taskList.appendChild(taskItem);
+  });
+}
+
 // Add event listener for form submission
 taskForm.addEventListener("submit", function (e) {
   e.preventDefault(); // Prevent default form submission
 
-  // Get the task details from the form fields
   const taskTitleInput = document.getElementById("taskTitle");
   const taskDescriptionInput = document.getElementById("taskDescription");
   const taskDueDateInput = document.getElementById("taskDueDate");
@@ -21,83 +54,39 @@ taskForm.addEventListener("submit", function (e) {
   const taskDescription = taskDescriptionInput.value;
   const taskDueDate = taskDueDateInput.value;
 
-  // Create a task object with the captured details
   const task = {
     title: taskTitle,
     description: taskDescription,
-    dueDate: new Date(taskDueDate).toISOString().slice(0, 10),
-};
+    dueDate: taskDueDate,
+  };
 
-  // Send a POST request to create a new task
   axios
     .post(`${baseUrl}/tasks`, task)
-    .then((response) => {
-      const newTask = response.data;
-      tasks.push(newTask); // Add the new task to the tasks array
-      renderTask(newTask); // Render the new task on the page
+    .then(() => {
+      fetchTasks(); // Fetch the updated tasks and render them
       taskForm.reset(); // Reset form fields
     })
     .catch((error) => {
-      console.error("Error:", error.message);
+      console.error("Error creating task:", error.message);
     });
 });
 
-// Function to render a task item
-function renderTask(task) {
-  const taskItem = document.createElement("li");
-  taskItem.setAttribute("data-task-id", task.id);
-
-  const taskLink = document.createElement("a");
-  taskLink.textContent = task.title;
-  taskLink.href = `task-details.html?id=${task.id}`;
-
-  const deleteButton = document.createElement("button");
-  deleteButton.textContent = "Delete";
-  deleteButton.addEventListener("click", () => {
-    deleteTask(task.id);
-  });
-
-  const descriptionParagraph = document.createElement("p");
-  descriptionParagraph.textContent = task.description;
-
-  const dueDateParagraph = document.createElement("p");
-  const dueDate = new Date(task.dueDate);
-  if (!isNaN(dueDate)) {  // Check if the date is valid
-    dueDateParagraph.textContent = `Due Date: ${new Date(task.dueDate).toLocaleDateString()}`;
-
-  } else {
-    dueDateParagraph.textContent = "Due Date: Invalid Date";
-  }
-
-  taskItem.appendChild(taskLink);
-  taskItem.appendChild(deleteButton);
-  taskItem.appendChild(descriptionParagraph);
-  taskItem.appendChild(dueDateParagraph);
-
-  taskList.appendChild(taskItem);
-}
-
-// Function to delete a task
+// Delete a task
 function deleteTask(taskId) {
-  // Send a DELETE request to the server
   axios
     .delete(`${baseUrl}/tasks/${taskId}`)
     .then((response) => {
       if (response.status === 204) {
-        // Remove the task from the tasks array
-        tasks = tasks.filter((task) => task.id !== taskId);
-
-        // Remove the task item from the task list
-        const taskItem = document.querySelector(`li[data-task-id="${taskId}"]`);
-        if (taskItem) {
-          taskItem.remove();
-        }
+        // Task deleted successfully
+        fetchTasks(); // Fetch the updated tasks and render them
       } else {
         throw new Error("Error deleting task");
       }
     })
     .catch((error) => {
-      console.error("Error:", error.message);
-      // Display an error message on the page or perform any other error handling
+      console.error("Error deleting task:", error.message);
     });
 }
+
+// Fetch tasks when the page loads
+fetchTasks();

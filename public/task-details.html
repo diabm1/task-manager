@@ -3,47 +3,42 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Details</title>
-    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <div id="task-container">
-        <h1 id="task-title"></h1>
-        <p id="task-description"></p>
-        <p id="task-due-date"></p>
+    <!-- The back link -->
+    <div style="margin-bottom: 20px;">
+        <a href="index.html">Back to Homepage</a>
     </div>
 
-    <button id="edit-button">Edit Task</button>
-    <button id="delete-button">Delete Task</button>
+    <div id="task-container">
+        <h2 id="task-title"></h2>
+        <p id="task-description"></p>
+        <p id="task-due-date"></p>
+        <button id="edit-button">Edit</button>
+        <button id="delete-button">Delete</button>
+    </div>
 
     <div id="edit-form" style="display: none;">
         <h2>Edit Task</h2>
         <form id="edit-task-form">
-            <div>
-                <label for="edit-task-title">Task Title:</label>
-                <input type="text" id="edit-task-title" required>
-            </div>
-            <div>
-                <label for="edit-task-description">Task Description:</label>
-                <textarea id="edit-task-description" required></textarea>
-            </div>
-            <div>
-                <label for="edit-task-due-date">Due Date:</label>
-                <input type="date" id="edit-task-due-date" required>
-            </div>
-            <div>
-                <button type="submit">Save Changes</button>
-                <button type="button" id="cancel-button">Cancel</button>
-            </div>
+            <label for="edit-task-title">Title:</label>
+            <input type="text" id="edit-task-title" required>
+            <br>
+            <label for="edit-task-description">Description:</label>
+            <textarea id="edit-task-description" required></textarea>
+            <br>
+            <label for="edit-task-due-date">Due Date:</label>
+            <input type="date" id="edit-task-due-date">
+            <br>
+            <button type="submit">Save</button>
+            <button type="button" id="cancel-button">Cancel</button>
         </form>
     </div>
 
-    <a href="index.html">Back to Task List</a>
-
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="task-details.js"></script>
 </body>
 
