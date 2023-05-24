@@ -37,25 +37,48 @@ h1 {
 
 .task-item {
     margin-bottom: 20px;
-    padding: 10px;
+    padding: 20px;
     border: 1px solid #ccc;
     background-color: #f9f9f9;
-    border-radius: 4px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.task-item h3 {
-    margin: 0 0 10px;
+.task-item:hover {
+    background-color: #f0f0f0;
+}
+
+.task-item a {
     font-size: 18px;
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s ease;
 }
 
-.task-item p {
-    margin: 0;
-    font-size: 14px;
+.task-item a:hover {
+    color: #555;
 }
 
-.task-item .due-date {
-    font-size: 12px;
-    color: #999;
+.task-item button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.task-item button:hover {
+    background-color: #c0392b;
+}
+
+.task-item:last-child {
+    margin-bottom: 0;
 }
 
 /* Task details styles */
@@ -139,4 +162,76 @@ h1 {
 
 .back-link:hover {
     text-decoration: underline;
+}
+
+/* Additional Styles */
+
+/* Homepage styles */
+#taskList {
+    margin-top: 20px;
+}
+
+/* Task details page styles */
+#task-container {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#task-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#task-container p {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+#edit-form {
+    display: none;
+}
+
+#edit-form h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#edit-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#edit-form input[type="text"],
+#edit-form textarea,
+#edit-form input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+#edit-form button[type="submit"],
+#edit-form button[type="button"] {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#edit-form button[type="submit"]:hover,
+#edit-form button[type="button"]:hover {
+    background-color: #45a049;
 }
