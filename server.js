@@ -17,6 +17,7 @@ app.use(cors());
 
 // Enable caching for static assets
 app.use(express.static("public", { maxAge: 3600000 }));
+app.use(express.static(`${__dirname}/public`));
 
 // Enable compression
 const compression = require("compression");
